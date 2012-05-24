@@ -5,24 +5,10 @@ import java.util.HashSet;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerChatEvent;
-import org.bukkit.event.player.PlayerCommandPreprocessEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class J2MC_Afk extends JavaPlugin implements Listener {
-
-    private final HashSet<String> names = new HashSet<String>();
-
-    @Override
-    public void onDisable() {
-    }
-
-    @Override
-    public void onEnable() {
-        this.getServer().getPluginManager().registerEvents(this, this);
-        this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new AfkCheck(), 6000, 6000);
-    }
 
     private class AfkCheck implements Runnable {
 
@@ -38,10 +24,7 @@ public class J2MC_Afk extends JavaPlugin implements Listener {
 
     }
 
-    @EventHandler
-    public void onInteract(PlayerInteractEvent event) {
-        this.names.add(event.getPlayer().getName());
-    }
+    private final HashSet<String> names = new HashSet<String>();
 
     @EventHandler
     public void onChat(PlayerChatEvent event) {
@@ -50,6 +33,32 @@ public class J2MC_Afk extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onCommand(PlayerCommandPreprocessEvent event) {
+        this.names.add(event.getPlayer().getName());
+    }
+
+    @Override
+    public void onEnable() {
+        this.getServer().getPluginManager().registerEvents(this, this);
+        this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new AfkCheck(), 6000, 6000);
+    }
+
+    @EventHandler
+    public void onInteract(PlayerInteractEvent event) {
+        this.names.add(event.getPlayer().getName());
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent event) {
+        this.names.add(event.getPlayer().getName());
+    }
+
+    @EventHandler
+    public void onSneak(PlayerToggleSneakEvent event) {
+        this.names.add(event.getPlayer().getName());
+    }
+
+    @EventHandler
+    public void onSprint(PlayerToggleSprintEvent event) {
         this.names.add(event.getPlayer().getName());
     }
 }
