@@ -5,6 +5,7 @@ import java.util.HashSet;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.player.*;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -44,6 +45,9 @@ public class J2MC_Afk extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
+        if (event.getAction() == Action.PHYSICAL) {
+            return;
+        }
         this.names.add(event.getPlayer().getName());
     }
 
