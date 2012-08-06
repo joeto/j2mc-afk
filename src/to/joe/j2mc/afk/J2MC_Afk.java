@@ -1,6 +1,8 @@
 package to.joe.j2mc.afk;
 
-import java.util.HashSet;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Set;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -25,10 +27,10 @@ public class J2MC_Afk extends JavaPlugin implements Listener {
 
     }
 
-    private final HashSet<String> names = new HashSet<String>();
+    private final Set<String> names = Collections.newSetFromMap(new HashMap<String, Boolean>());
 
     @EventHandler
-    public void onChat(PlayerChatEvent event) {
+    public void onChat(AsyncPlayerChatEvent event) {
         this.names.add(event.getPlayer().getName());
     }
 
