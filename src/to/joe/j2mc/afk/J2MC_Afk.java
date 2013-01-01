@@ -1,7 +1,7 @@
 package to.joe.j2mc.afk;
 
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.bukkit.entity.Player;
@@ -27,7 +27,7 @@ public class J2MC_Afk extends JavaPlugin implements Listener {
 
     }
 
-    private final Set<String> names = Collections.newSetFromMap(new HashMap<String, Boolean>());
+    private final Set<String> names = Collections.synchronizedSet(new HashSet<String>());
 
     @EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
@@ -47,10 +47,9 @@ public class J2MC_Afk extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
-        if (event.getAction() == Action.PHYSICAL) {
-            return;
+        if (event.getAction() != Action.PHYSICAL) {
+            this.names.add(event.getPlayer().getName());
         }
-        this.names.add(event.getPlayer().getName());
     }
 
     @EventHandler
